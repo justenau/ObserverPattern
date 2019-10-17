@@ -2,7 +2,7 @@ package domain;
 
 public interface Subject {
 
-    void registerObserver(Observer observer);
-    void removeObserver(Observer observer);
-    void notifyObservers();
+    void registerObserver(EventTypeEnum e,Observer observer);
+    void removeObserver(EventTypeEnum e,Observer observer);
+    void notifyObservers(EventTypeEnum e);
 }

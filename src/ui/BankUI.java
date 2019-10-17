@@ -14,7 +14,7 @@ public class BankUI {
     }
 
     public void show(){
-        String menu = "1. Open account\n\n0. Program closes";
+        String menu = "1. Open account\n2. Deposit account\n3. Withdraw account\n\n0. Program closes";
         String input;
         int choice;
         do{
@@ -32,12 +32,96 @@ public class BankUI {
                 case 1:
                     openAccount();
                     break;
+                case 2:
+                    depositAccount();
+                    break;
+                case 3:
+                    withdrawAccount();
+                    break;
                 case 0:
                     return;
                 default:
                     JOptionPane.showMessageDialog(null, "Please choose an option from the list!!");
             }
         } while(choice!=0);
+    }
+
+    private void withdrawAccount() {
+        String input= JOptionPane.showInputDialog("Enter the account number:");
+        int number;
+        if (input.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Account number field cannot be empty!");
+            return;
+        }
+        try {
+            number = Integer.parseInt(input);
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Account number can contain only digits!");
+            return;
+        }
+
+        Account account = bank.getAccount(number);
+        if(account==null){
+            JOptionPane.showMessageDialog(null, "Account not found!");
+            return;
+        }
+
+        input = JOptionPane.showInputDialog("Enter amount:");
+        double withdrawAmount;
+        if (input.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Withdraw amount field cannot be empty!");
+            return;
+        }
+        try {
+            withdrawAmount = Double.parseDouble(input);
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Withdraw amount can contain only digits or '.'!");
+            return;
+        }
+        if(account.getBalance()<withdrawAmount){
+            JOptionPane.showMessageDialog(null, "There's not enough money!");
+            return;
+        }
+
+        account.withdraw(withdrawAmount);
+        bank.accountWithdrawed();
+    }
+
+    private void depositAccount() {
+        String input= JOptionPane.showInputDialog("Enter the account number:");
+        int number;
+        if (input.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Account number field cannot be empty!");
+            return;
+        }
+        try {
+            number = Integer.parseInt(input);
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Account number can contain only digits!");
+            return;
+        }
+
+        Account account = bank.getAccount(number);
+        if(account==null){
+            JOptionPane.showMessageDialog(null, "Account not found!");
+            return;
+        }
+
+        input = JOptionPane.showInputDialog("Enter amount:");
+        double depositAmount;
+        if (input.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Deposit amount field cannot be empty!");
+            return;
+        }
+        try {
+            depositAmount = Double.parseDouble(input);
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Deposit amount can contain only digits or '.'!");
+            return;
+        }
+
+        account.deposit(depositAmount);
+        bank.accountDeposited();
     }
 
     public void openAccount(){

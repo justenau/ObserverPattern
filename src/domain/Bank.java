@@ -2,41 +2,62 @@ package domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class Bank implements Subject {
 
-    private ArrayList<Observer> observers;
+    private HashMap<EventTypeEnum,ArrayList<Observer>> observers;
     private ArrayList<Account> accounts;
 
     public Bank(){
-        observers = new ArrayList<>();
+        observers = new HashMap<>();
+        for (EventTypeEnum e: EventTypeEnum.values()) {
+            observers.put(e,new ArrayList<>());
+        }
         accounts = new ArrayList<>();
     }
 
     @Override
-    public void registerObserver(Observer observer) {
-        observers.add(observer);
+    public void registerObserver(EventTypeEnum e,Observer observer) {
+        observers.get(e).add(observer);
     }
 
     @Override
-    public void removeObserver(Observer observer) {
-        observers.remove(observer);
+    public void removeObserver(EventTypeEnum e,Observer observer) {
+        observers.get(e).remove(observer);
     }
 
     @Override
-    public void notifyObservers() {
-        for (Observer o: observers) {
-            o.update(accounts.get(accounts.size()-1));
+    public void notifyObservers(EventTypeEnum e) {
+        for (Observer o: observers.get(e)) {
+            o.update(accounts.get(accounts.size()-1),e);
         }
     }
 
     public void addAccount(Account account){
         accounts.add(account);
-        dataChanged();
+        accountOpened();
     }
 
-    public void dataChanged(){
-        notifyObservers();
+    public void accountOpened(){
+        notifyObservers(EventTypeEnum.Opening);
     }
+
+    public void accountWithdrawed(){
+        notifyObservers(EventTypeEnum.Withdrawing);
+    }
+
+    public void accountDeposited(){
+        notifyObservers(EventTypeEnum.Depositing);
+    }
+
+    public Account getAccount(int id){
+        for (Account a:accounts) {
+            if(a.getNumber() == id)
+                return a;
+        }
+        return null;
+    }
+
+
+
 }

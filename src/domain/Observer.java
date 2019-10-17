@@ -2,5 +2,5 @@ package domain;
 
 public interface Observer {
 
-    void update(Account account);
+    void update(Account account, EventTypeEnum eventTypeEnum);
 }

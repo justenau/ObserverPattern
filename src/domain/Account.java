@@ -29,4 +29,12 @@ public class Account {
     public Date getOpenDate() {
         return openDate;
     }
+
+    public void withdraw(double amount){
+        balance -=amount;
+    }
+
+    public void deposit(double amount){
+        balance+=amount;
+    }
 }
