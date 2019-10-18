@@ -6,14 +6,14 @@ import java.util.HashMap;
 public class Bank implements Subject {
 
     private HashMap<EventTypeEnum,ArrayList<Observer>> observers;
-    private ArrayList<Account> accounts;
+    private HashMap<Integer,Account> accounts;
 
     public Bank(){
         observers = new HashMap<>();
         for (EventTypeEnum e: EventTypeEnum.values()) {
             observers.put(e,new ArrayList<>());
         }
-        accounts = new ArrayList<>();
+        accounts = new HashMap<>();
     }
 
     @Override
@@ -29,12 +29,12 @@ public class Bank implements Subject {
     @Override
     public void notifyObservers(EventTypeEnum e) {
         for (Observer o: observers.get(e)) {
-            o.update(accounts.get(accounts.size()-1),e);
+            o.update(accounts.get(accounts.size()),e);
         }
     }
 
     public void addAccount(Account account){
-        accounts.add(account);
+        accounts.put(account.getNumber(),account);
         accountOpened();
     }
 
@@ -51,13 +51,6 @@ public class Bank implements Subject {
     }
 
     public Account getAccount(int id){
-        for (Account a:accounts) {
-            if(a.getNumber() == id)
-                return a;
-        }
-        return null;
+        return accounts.get(id);
     }
-
-
-
 }
