@@ -7,6 +7,8 @@ public class Bank implements Subject {
 
     private HashMap<EventTypeEnum,ArrayList<Observer>> observers;
     private HashMap<Integer,Account> accounts;
+    private Account updatedAccount;
+
 
     public Bank(){
         observers = new HashMap<>();
@@ -29,12 +31,13 @@ public class Bank implements Subject {
     @Override
     public void notifyObservers(EventTypeEnum e) {
         for (Observer o: observers.get(e)) {
-            o.update(accounts.get(accounts.size()),e);
+            o.update(updatedAccount,e);
         }
     }
 
     public void addAccount(Account account){
         accounts.put(account.getNumber(),account);
+        updatedAccount = account;
         accountOpened();
     }
 
@@ -52,5 +55,9 @@ public class Bank implements Subject {
 
     public Account getAccount(int id){
         return accounts.get(id);
+    }
+
+    public void setUpdatedAccount(Account updatedAccount) {
+        this.updatedAccount = updatedAccount;
     }
 }

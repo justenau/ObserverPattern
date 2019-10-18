@@ -84,6 +84,7 @@ public class BankUI {
         }
 
         account.withdraw(withdrawAmount);
+        bank.setUpdatedAccount(account);
         bank.accountWithdrawed();
     }
 
@@ -121,6 +122,7 @@ public class BankUI {
         }
 
         account.deposit(depositAmount);
+        bank.setUpdatedAccount(account);
         bank.accountDeposited();
     }
 
